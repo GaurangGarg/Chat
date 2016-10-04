@@ -1,6 +1,7 @@
 import socket
 import sys
 import select
+from utils import *
 
 
 class Client(object):
@@ -10,9 +11,13 @@ class Client(object):
         self.address = address
         self.port = int(port)
         self.socket = socket.socket()
-        # connect to server
-        # send name to server
-        self.socket.connect((self.address, self.port))
+
+        try:
+            self.socket.connect((self.address, self.port))
+        except Exception as e:
+            print CLIENT_CANNOT_CONNECT.format(self.address, self.port)
+            sys.exit()
+
         self.socket.send(self.name)
         self.FD_LIST = [self.socket, sys.stdin]
 
@@ -27,9 +32,13 @@ class Client(object):
                 if fd == self.socket:
                     data = self.socket.recv(200)
                     if not data:
+                        sys.stdout.write(CLIENT_WIPE_ME)
+                        sys.stdout.write('\r' + CLIENT_SERVER_DISCONNECTED.format(self.address, self.port) + '\n')
                         sys.exit()
                     else:
-                        sys.stdout.write(data)
+                        data = data.strip('\n')
+                        sys.stdout.write(CLIENT_WIPE_ME)
+                        sys.stdout.write('\r'+data+'\n')
                         sys.stdout.write('[Me] ')
                         sys.stdout.flush()
                 else:
