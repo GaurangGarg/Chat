@@ -47,7 +47,3 @@ SERVER_CREATE_REQUIRES_ARGUMENT = \
 # Message sent to a client that sends a regular message before joining any channels.
 SERVER_CLIENT_NOT_IN_CHANNEL = \
   "Not currently in any channel. Must join a channel before sending messages."
-
-# Message broad casted to all clients when a client writes a message to channel
-SERVER_CLIENT_MESSAGE = \
-  "[{}] {}"
