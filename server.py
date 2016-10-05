@@ -104,6 +104,7 @@ class Server(object):
         channel = self.clients.get(sock.fileno(), {}).get('channel')
         if channel:
             name = self.clients.get(sock.fileno(), {}).get('name')
+            self.channels.get(channel, []).remove(sock)
             self.broadcast(SERVER_CLIENT_LEFT_CHANNEL.format(name), sock, self.channels.get(channel, []))
         self.clients.pop(sock.fileno(), None)
         if sock in self.SOCKET_LIST:
